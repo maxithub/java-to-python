@@ -15,20 +15,46 @@ def say_hello(name):
         print("What is your name?")
 
 
-# 03
+# No ( ) for condition checking, e.g. if, while
+if 1 == 2:
+    print("Never happen")
+else:
+    print("Always true")
 
+i = 0
+while i < 10:
+    print(str(i))
+    i += 1
 
 # No need to specify type when declare variable
 integer = 1
 string = "Hello"
 
 
-# use def keyword to define method
+# Use def keyword to define method
 def do_something():
     print("Doing something...")
 
 
-# 05 use global keyword to access global variables
+# exception handling
+try:
+    error_list = [0, 1, 2, 3, 4]
+    print(error_list[4])
+
+    if 1 == 1:
+        raise ValueError("Oops")
+
+except IndexError as e:
+    print(f"Index error {e.args}")
+except (IOError, ValueError):
+    print("Something wrong with IO or Value")
+else:
+    print("Unknown error")
+finally:
+    print("Do some clean up here")
+
+
+# Use global keyword to access global variables
 global_counter = 100
 
 
@@ -37,8 +63,39 @@ def increase():
     global_counter += 1
 
 
-# Data types
-## bool (Java boolean)
+# empty block
+def empty_function():
+    pass
+
+
+# no method overloading, use default argument, *args and **kwars
+def default_arg(a, b, c="c", d="d"):
+    print(f"{a}, {b}, {c}, {d}")
+
+
+default_arg("a", "b", "d")
+default_arg("1", "2")
+default_arg("1", "2", d="3")
+
+
+def var_args(a, b, *args):
+    print(f"{a}, {b}, {args}")
+
+
+var_args("a", "b", "c")
+var_args("a", "b", "c", "d", "e")
+var_args("a", "b", "c", 1, 2)
+
+
+def print_table(**kwargs):
+    for key, value in kwargs.items():
+        print(key, value)
+
+
+print_table(a=5, b=6, c=7)
+
+# ------------------------- Big syntax differences ----------------------------
+# ------- bool (Java boolean) -------
 # is vs ==
 str1 = "hello"
 str2 = "hello"
@@ -56,7 +113,7 @@ print(True and False)
 print(True & False)
 
 
-## string
+# ------- string -------
 double_quote = "same as Java 'single quote' inside"
 print(double_quote)
 single_quote = 'single quote "double quote" inside'
@@ -109,7 +166,7 @@ print(whole_with_percentage)
 # print(help(str))
 
 
-# numeric types: int, float and complex
+# ------- numeric types: int, float and complex -------
 an_integer = 1234
 an_float = 1234.56
 an_complex = 2 - 1j
@@ -128,7 +185,7 @@ floor_division = 3 // 2
 print(floor_division)
 
 
-# list
+# ------- list -------
 my_list = [0, 1, 2, 3, 4, 5, 6]
 print(my_list)
 print(my_list[0])
@@ -165,15 +222,23 @@ for n in my_list:
 for i, n in enumerate(my_list, start=2):
     print(f"my_list[{i}]={n}")
 
-# tuple, as immutable list
+# ------- tuple, as immutable list -------
 an_tuple = (0, 1, 2, 3)
 print(an_tuple)
 
-# set
+
+def multiple_return():
+    return 1, "two", 3
+
+
+print(multiple_return())
+
+
+# ------- set -------
 an_set = {0, 1, 2, 3, 4}
 print(an_set)
 
-# empty list, tuple, set
+# ------- empty list, tuple, set -------
 empty_list_1 = []
 empty_list_2 = list()
 
@@ -183,7 +248,7 @@ empty_tupble_2 = tuple()
 # empty_set = {} # Not right, this is dict
 empty_set = set()
 
-# list map, filter vs comprehension
+# ------- list map, filter vs comprehension -------
 my_list_2 = list(map(lambda k: k * 2, my_list))
 print(my_list_2)
 my_list_3 = [k * 2 for k in my_list]
@@ -196,7 +261,7 @@ print(my_list_5)
 
 # https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions
 
-# dict (map in Java)
+# ------- dict (map in Java) -------
 
 a_dict = {"one": 1, "two": 2, "three": 3}
 print(a_dict)
@@ -214,9 +279,16 @@ for (k, v) in a_dict.items():
 
 
 # define class
+
+# Everything is an object
+
 class Account(object):
+    # static field
+    counter = 0
+
     # Constructor
     def __init__(self, id, balance):
+        Account.counter += 1
         self.id = id
         self.balance = balance
 
@@ -240,3 +312,6 @@ class Account(object):
     @classmethod
     def from_dict(cls, a_dict):
         return cls(a_dict['id'], a_dict['balance'])
+
+
+# abstract class (no interface)
