@@ -294,7 +294,7 @@ class Account(object):
 
     # toString() in Java
     def __str__(self):
-        return "id = " + self.id + ", balance = " + self.balance
+        return f"id = {self.id}, balance = {self.balance}, counter = {Account.counter}"
 
     # instance method
     def deposit(self, amount):
@@ -314,4 +314,39 @@ class Account(object):
         return cls(a_dict['id'], a_dict['balance'])
 
 
+from_account = Account(1, 100)
+to_account = Account(2, 50)
+print(from_account)
+print(to_account)
+Account.transfer(from_account, to_account, 30)
+print(from_account)
+print(to_account)
+
 # abstract class (no interface)
+from abc import ABC, abstractmethod
+
+
+class MyAbc1(ABC):
+    @abstractmethod
+    def my_abc1(self):
+        pass
+
+
+class MyAbc2(ABC):
+    @abstractmethod
+    def my_abc2(self):
+        pass
+
+
+class MyClass(MyAbc1, MyAbc2):
+    def my_abc1(self):
+        print("my_abc1 is called")
+
+    def my_abc2(self):
+        print("my_abc2 is called")
+
+
+# my_abc1 = MyAbc1()
+
+my_class = MyClass()
+my_class.my_abc1()
