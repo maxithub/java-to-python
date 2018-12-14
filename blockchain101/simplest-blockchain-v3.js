@@ -10,23 +10,23 @@ class Transaction {
 }
 
 class Block {
-    constructor(timestamp, transactions, data, previousHash='') {
+    constructor(timestamp, transactions, previousHash='') {
         this.timestamp = timestamp;
         this.transactions = transactions;
-        this.data = data;
         this.previousHash = previousHash;
 
-        this.hash = this.calculateHash();
+        this.hash = '';
         this.nonce = 0;
     }
 
-    calculateHash() {
-        return SHA256(this.index + this.previousHash + this.timestamp
-            + JSON.stringify(this.data) + this.nonce).toString();
+    calculateHash() {        
+        return SHA256(this.timestamp + this.previousHash
+            + JSON.stringify(this.transactions) + this.nonce).toString();
     }
 
     mineBlock(difficulty) {
-        while(this.hash.substring(0, difficulty) !== Array(difficulty + 1).join('0')) {
+        let prefix = Array(difficulty + 1).join('0');
+        while(!this.hash.startsWith(prefix)) {
             this.nonce ++;
             this.hash = this.calculateHash();
         }
@@ -44,7 +44,9 @@ class Blockchain {
     }
 
     createGenesisBlock() {
-        return new Block('09/12/2018', 'Genesis Block', '0');
+        let block = new Block(Date.now(), [], '');
+        block.hash = block.calculateHash();
+        return block;
     }
 
     getLatestBlock() {
@@ -52,7 +54,7 @@ class Blockchain {
     }
 
     minePendinTransactions(miningRecordAddress) {
-        let block = new Block(Date.now(), this.pendingTransactions);
+        let block = new Block(Date.now(), this.pendingTransactions, this.getLatestBlock().hash);
         block.mineBlock(this.difficulty);
         this.pendingTransactions = [
             new Transaction(null, miningRecordAddress, this.miningReward)
