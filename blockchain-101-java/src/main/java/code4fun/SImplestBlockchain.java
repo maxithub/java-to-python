@@ -145,11 +145,11 @@ public class SImplestBlockchain {
             return chain.get(chain.size() - 1);
         }
 
-        public void minePendingTransactions(String miningRecordingAddress) {
+        public void minePendingTransactions(String miningRewardAddress) {
             Block block = new Block(LocalDateTime.now(), pendingTransactions, getLatestBlock().getHash());
             block.mineBlock(this.difficulty);
             pendingTransactions = new ArrayList<>();
-            pendingTransactions.add(new Transaction("", miningRecordingAddress, miningReward));
+            pendingTransactions.add(new Transaction("", miningRewardAddress, miningReward));
             System.out.println("Block successfully mined");
             chain.add(block);
         }
