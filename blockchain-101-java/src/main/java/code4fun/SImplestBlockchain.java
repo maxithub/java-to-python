@@ -97,6 +97,14 @@ public class SImplestBlockchain {
             this.hash = hash;
         }
 
+        public List<Transaction> getTransactions() {
+            return transactions;
+        }
+
+        public void setTransactions(List<Transaction> transactions) {
+            this.transactions = transactions;
+        }
+
         public String calculateHash() {
             return DigestUtils.sha256Hex(toString());
         }
@@ -143,6 +151,10 @@ public class SImplestBlockchain {
 
         public Block getLatestBlock() {
             return chain.get(chain.size() - 1);
+        }
+
+        public Block getBlock(int index) {
+            return chain.get(index);
         }
 
         public void minePendingTransactions(String miningRewardAddress) {
@@ -202,6 +214,11 @@ public class SImplestBlockchain {
         System.out.println("Starting the miner..");
         blockchain.minePendingTransactions("miner1");
         System.out.println(String.format("Balance of the miner: %s is %s", "miner1", blockchain.getBalanceOfAddress("miner1").toString()));
+        System.out.println("Is chain valid: " + blockchain.isChainValid());
+
+        Block block = blockchain.getBlock(1);
+        block.setTransactions(Collections.singletonList(new Transaction("some-address", "my-address", BigDecimal.valueOf(100000))));
+        block.setHash(block.calculateHash());
         System.out.println("Is chain valid: " + blockchain.isChainValid());
     }
 }

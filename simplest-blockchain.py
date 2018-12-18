@@ -70,10 +70,10 @@ class Blockchain:
                     balance += transaction.amount
         return balance
 
-    def inChainValid(self):
-        for i in range(1, len(chain)):
-            currentBlock = chain[i]
-            previousBlock = chain[i-1]
+    def isChainValid(self):
+        for i in range(1, len(self.chain)):
+            currentBlock = self.chain[i]
+            previousBlock = self.chain[i-1]
 
             if currentBlock.hash != currentBlock.calculateHash():
                 return False
@@ -93,3 +93,9 @@ print(f"Balance of the miner: miner1 is {blockchain.getBalanceOfAddress('miner1'
 print('Starting miner...')
 blockchain.minePendingTransactions('miner1')
 print(f"Balance of the miner: miner1 is {blockchain.getBalanceOfAddress('miner1')}")
+print(f"Is chain valid: {blockchain.isChainValid()}")
+
+block = blockchain.chain[1]
+block.transactions = [ Transaction('some-address', 'my-address', 100000) ]
+block.hash = block.calculateHash()
+print(f"Is chain valid: {blockchain.isChainValid()}")
